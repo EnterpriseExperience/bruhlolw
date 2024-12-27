@@ -149,18 +149,24 @@ else
                 return warn("Player (Character): "..tostring(player)..", was not found!")
             end
         elseif command == ".freeze" then
-            if player then
-                run_freeze("true", player)
+            if player.Character then
+                local Character = player.Character
+                local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+                
+                HumanoidRootPart.Anchored = true
             else
                 return warn("Player (Character): "..tostring(player)..", was not found!")
             end
         elseif command == ".unfreeze" then
-            if player then
-                run_freeze("false", player)
+            if player.Character then
+                local Character = player.Character
+                local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+                
+                HumanoidRootPart.Anchored = false
             else
                 return warn("Player (Character): "..tostring(player)..", was not found!")
             end
-        elseif command == ".user" then
+        elseif command == ".users" then
             if player then
                 getgenv().TextChatService:FindFirstChild("TextChannels"):FindFirstChild("RBXGeneral"):SendAsync("I'm using: Zacks Easy Hub")
             else
@@ -185,7 +191,99 @@ else
             end
         elseif command == ".jail" then
             if player then
-                jailEvent:Fire(player)
+                getgenv().cageEnabled = true
+                getgenv().heartbeatConnection = nil
+                
+                local Players = game:GetService("Players")
+                local Workspace = game:GetService("Workspace")
+                local RunService = game:GetService("RunService")
+                local TweenService = game:GetService("TweenService")
+                local Lighting = game:GetService("Lighting")
+
+                local camera = Workspace.CurrentCamera
+                
+                local Necessary_Folder = Workspace:FindFirstChild("parts_stuff") or Instance.new("Folder", Workspace)
+                Necessary_Folder.Name = "parts_stuff"
+                
+                local function createCage()
+                    local cageSize = Vector3.new(10, 10, 10)
+                    local transparency = 0.5
+                    local centerPosition
+                    local cageModel = Instance.new("Model")
+                    cageModel.Name = "Cage"
+                    cageModel.Parent = Necessary_Folder
+                
+                    local function createPart(size, position)
+                        local part = Instance.new("Part")
+                        part.Size = size
+                        part.Position = position
+                        part.Anchored = true
+                        part.CanCollide = true
+                        part.Transparency = transparency
+                        part.Material = Enum.Material.Neon
+                        part.BrickColor = BrickColor.new("White")
+                        part.Parent = cageModel
+                        return part
+                    end
+                
+                    local function setupCage(humanoidRootPart)
+                        centerPosition = humanoidRootPart.Position
+                        for _, part in cageModel:GetChildren() do
+                            part:Destroy()
+                        end
+                        createPart(Vector3.new(cageSize.X, 1, cageSize.Z), centerPosition - Vector3.new(0, cageSize.Y / 2, 0))
+                        createPart(Vector3.new(cageSize.X, 1, cageSize.Z), centerPosition + Vector3.new(0, cageSize.Y / 2, 0))
+                        createPart(Vector3.new(cageSize.X, cageSize.Y, 1), centerPosition + Vector3.new(0, 0, cageSize.Z / 2))
+                        createPart(Vector3.new(cageSize.X, cageSize.Y, 1), centerPosition - Vector3.new(0, 0, cageSize.Z / 2))
+                        createPart(Vector3.new(1, cageSize.Y, cageSize.Z), centerPosition - Vector3.new(cageSize.X / 2, 0, 0))
+                        createPart(Vector3.new(1, cageSize.Y, cageSize.Z), centerPosition + Vector3.new(cageSize.X / 2, 0, 0))
+                    end
+                
+                    local function enforceCage(humanoidRootPart)
+                        RunService.Heartbeat:Connect(function()
+                            if getgenv().cageEnabled and humanoidRootPart and centerPosition then
+                                local position = humanoidRootPart.Position
+                                local minBound = centerPosition - cageSize / 2
+                                local maxBound = centerPosition + cageSize / 2
+                                if position.X < minBound.X or position.X > maxBound.X or
+                                   position.Y < minBound.Y or position.Y > maxBound.Y or
+                                   position.Z < minBound.Z or position.Z > maxBound.Z then
+                                    humanoidRootPart.CFrame = CFrame.new(centerPosition)
+                                end
+                            end
+                        end)
+                    end
+                    
+                    local function handleCharacter(character)
+                        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+                        setupCage(humanoidRootPart)
+                        enforceCage(humanoidRootPart)
+                    end
+                
+                    local function updateLighting()
+                        if getgenv().heartbeatConnection then
+                            getgenv().heartbeatConnection:Disconnect()
+                        end
+                        getgenv().heartbeatConnection = RunService.Heartbeat:Connect(function()
+                            if camera and centerPosition then
+                                local cameraPosition = camera.CFrame.Position
+                                local minBound = centerPosition - cageSize / 2
+                                local maxBound = centerPosition + cageSize / 2
+                                Lighting.ClockTime = (cameraPosition.X < minBound.X or cameraPosition.X > maxBound.X or
+                                                      cameraPosition.Y < minBound.Y or cameraPosition.Y > maxBound.Y or
+                                                      cameraPosition.Z < minBound.Z or cameraPosition.Z > maxBound.Z) and 0 or 14
+                            end
+                        end)
+                    end
+                
+                    if player.Character then
+                        handleCharacter(player.Character)
+                    end
+                    player.CharacterAdded:Connect(handleCharacter)
+                    updateLighting()
+                end
+                
+                createCage()
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
@@ -216,13 +314,17 @@ else
             end
         elseif command == ".mute" then
             if player then
-                muteEvent:Fire(player, true)
+                local audio_device = player:FindFirstChildOfClass("AudioDeviceInput")
+
+                audio_device.Muted = true
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
         elseif command == ".unmute" then
             if player then
-                muteEvent:Fire(player, false)
+                local audio_device = player:FindFirstChildOfClass("AudioDeviceInput")
+
+                audio_device.Muted = false
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
@@ -272,7 +374,9 @@ else
             end
         elseif command == ".hide" then
             if player then
-                blind_plr(player)
+                local white_screen = player:WaitForChild("PlayerGui"):FindFirstChild("FULLSCREEN_GUI")
+                
+                white_screen.Enabled = true
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
@@ -301,9 +405,17 @@ else
         local text = message.Text
     
         if sender == "L0CKED_1N1" or sender == "Laylay_4kla" or sender == "CHEATING_B0SS" then
-            local prefix, command, playerName = string.match(text, "^(.)(%w+)%s*(.*)")
+            local prefix, command, playerName = string.match(text, "^(%.)(%w+)%s*(.*)")
+            
             if prefix and command then
-                handleCommand(prefix .. command, playerName)
+                local fullCommand = prefix .. command
+                local validCommands = {".bring", ".kill", ".freeze", ".unfreeze", ".users", ".promote", ".jail", ".unjail", ".mute", ".unmute", ".emote", ".nobooth", ".blur", ".unblur", ".hide", ".unhide"}
+                
+                if table.find(validCommands, fullCommand) then
+                    handleCommand(fullCommand, playerName)
+                else
+                    warn("Unknown command: " .. text)
+                end
             else
                 warn("Invalid message format: " .. text)
             end
@@ -347,14 +459,6 @@ else
         end
     end
 
-    function jail_plr(player)
-        jailEvent:Fire(player)
-    end
-
-    function blind_plr(player)
-        blindEvent:Fire(player)
-    end
-
     function run_chat()
         local speeches = {
             "Zacks Easy Hub [ON TOP!]",
@@ -368,16 +472,6 @@ else
 
         local randomSpeech = speeches[math.random(1, #speeches)]
         getgenv().RBXGeneral:SendAsync(randomSpeech)
-    end
-
-    function run_mute_cmd(player, boolean)
-        if boolean == true then
-            muteEvent:Fire(player, true)
-        elseif boolean == false then
-            muteEvent:Fire(player, false)
-        else
-            return warn("Invalid arguments provided!")
-        end
     end
 
     function run_emote(player)
@@ -432,16 +526,12 @@ else
     blindEvent.Name = "Keybinds-6"
     blindEvent.Parent = ReplicatedStorage
 
-    local jailEvent = Instance.new("BindableEvent")
-    jailEvent.Name = "Keybinds-7"
-    jailEvent.Parent = ReplicatedStorage
-
     local emoteEvent = Instance.new("BindableEvent")
-    emoteEvent.Name = "Keybinds-8"
+    emoteEvent.Name = "Keybinds-7"
     emoteEvent.Parent = ReplicatedStorage
 
     local muteEvent = Instance.new("BindableEvent")
-    muteEvent.Name = "Keybinds-9"
+    muteEvent.Name = "Keybinds-8"
     muteEvent.Parent = ReplicatedStorage
 
     muteEvent.Event:Connect(function(player, toggle)
@@ -487,7 +577,6 @@ else
     end)
 
     jailEvent.Event:Connect(function(player)
-        local jail_plr = findplr(player)
         getgenv().cageEnabled = true
         getgenv().heartbeatConnection = nil
         
@@ -497,7 +586,7 @@ else
         local TweenService = game:GetService("TweenService")
         local Lighting = game:GetService("Lighting")
         
-        local player = jail_plr
+        local player = player
         local camera = Workspace.CurrentCamera
         
         local Necessary_Folder = Workspace:FindFirstChild("parts_stuff") or Instance.new("Folder", Workspace)
