@@ -100,7 +100,7 @@ local function ensureBoolValue(playerName)
     return nil
 end
 
-local validCommands = {".bring", ".kill", ".freeze", ".unfreeze", ".users", ".promote", ".jail", ".unjail", ".mute", ".unmute", ".emote", ".nobooth", ".blur", ".unblur", ".hide", ".unhide", ".sit", ".jump", ".noclip", ".clip"}
+local validCommands = {".bring", ".kill", ".freeze", ".unfreeze", ".users", ".promote", ".jail", ".unjail", ".mute", ".unmute", ".emote", ".nobooth", ".blur", ".unblur", ".hide", ".unhide", ".sit", ".jump", ".noclip", ".clip", ".spawn", ".permspawn", ".nospawn"}
 
 local function handleCommand(command, playerName)
     local player = findplr(playerName)
@@ -219,9 +219,14 @@ local function handleCommand(command, playerName)
         
             local function setupCage(humanoidRootPart)
                 centerPosition = humanoidRootPart.Position
-                for _, part in cageModel:GetChildren() do
-                    part:Destroy()
+                if cageModel or game:GetService("Workspace"):FindFirstChild("parts_stuff") then
+                    for _, part in cageModel:GetChildren() do
+                        part:Destroy()
+                    end
+                else
+                    return warn("CageModel - Not Found!")
                 end
+                wait(0.2)
                 createPart(Vector3.new(cageSize.X, 1, cageSize.Z), centerPosition - Vector3.new(0, cageSize.Y / 2, 0))
                 createPart(Vector3.new(cageSize.X, 1, cageSize.Z), centerPosition + Vector3.new(0, cageSize.Y / 2, 0))
                 createPart(Vector3.new(cageSize.X, cageSize.Y, 1), centerPosition + Vector3.new(0, 0, cageSize.Z / 2))
