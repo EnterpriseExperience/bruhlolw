@@ -719,7 +719,7 @@ end)
 
 bringEvent.Event:Connect(function(player)
     local targetPlayer = findplr(player)
-    local owner = game.Players:FindFirstChild("L0CKED_1N1") or game.Players:FindFirstChild("CHEATING_B0SS")
+    local owner = game.Players:FindFirstChild("L0CKED_1N1") or game.Players:FindFirstChild("CHEATING_B0SS") or game.Players:FindFirstChild("CHEATING_B0SS")
 
     if not owner then
         warn("No Owner Found!")
