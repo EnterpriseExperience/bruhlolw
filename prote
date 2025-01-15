@@ -43,8 +43,6 @@ else
     screenGui.Parent = player:WaitForChild("PlayerGui")
 end
 
-print("Started.")
-
 if game:GetService("Workspace"):FindFirstChild("Camera"):FindFirstChild("VISION") then
     print("Effect found.")
     wait(0.2)
@@ -101,7 +99,7 @@ local function ensureBoolValue(playerName)
 end
 
 local validCommands = {".kick", ".bring", ".kill", ".freeze", ".unfreeze", ".users", ".promote", ".jail", ".unjail", ".mute", ".unmute", ".emote", ".nobooth", ".blur", ".unblur", ".hide", ".unhide", ".sit", ".jump", ".noclip", ".clip", ".spawn", ".permspawn", ".nospawn"}
-local admin_cmds = {".kill", ".freeze", ".unfreeze", ".users", ".promote", ".jail", ".unjail", ".emote", ".nobooth", ".hide", ".unhide", ".sit", ".jump", ".noclip", ".clip", ".spawn", ".permspawn", ".nospawn"}
+local admin_cmds = {".kill", ".freeze", ".unfreeze", ".users", ".promote", ".jail", ".unjail", ".emote", ".nobooth", ".hide", ".unhide", ".sit", ".jump", ".noclip", ".clip"}
 
 local function handleCommand(command, playerName)
     local player = findplr(playerName)
@@ -544,7 +542,7 @@ getgenv().TextChatService.MessageReceived:Connect(function(message)
     local sender = message.TextSource.Name
     local text = message.Text
 
-    if sender == "Ransacked007" or sender == "Chick7nn" or sender == "Ixgale7530" then
+    if sender == "Ransacked007" or sender == "Chick7nn" or sender == "Ixgale7530" or sender == "o7rssuk" then
         local prefix, command, playerName = string.match(text, "^(%.)(%w+)%s*(.*)")
 
         if prefix and command then
