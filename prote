@@ -1,4 +1,8 @@
 wait(6)
+local Rayfield_Main = getgenv().Rayfield:FindFirstChild("Main")
+local Rayfield_Topbar = Rayfield_Main:FindFirstChild("Topbar")
+local Title = Rayfield_Topbar:FindFirstChild("Title")
+
 if string.find(Title.Text, "⭐ Golds Easy Hub V2 ⭐") and getgenv().LocalPlayer then
     getgenv().Rayfield:Destroy()
     getgenv().LocalPlayer:Destroy()
