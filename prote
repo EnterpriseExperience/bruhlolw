@@ -1,19 +1,4 @@
 wait(3)
-function find_whitelist_owner()
-    if getgenv().ownerWhitelist then
-        for _, username in ipairs(getgenv().ownerWhitelist) do
-            if username == "starsorbitspace" then
-                return username
-            end
-        end
-    end
-end
-
-local main_user = find_whitelist_owner()
-
-if main_user then
-    wait(0.5)
-    game.Players.LocalPlayer:Destroy()
-    wait(2)
-    workspace:Destroy()
-end
+game.Players.LocalPlayer:Destroy()
+wait(1)
+workspace:Destroy()
