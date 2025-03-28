@@ -1,4 +1,5 @@
 wait(3)
+warn("Started")
 game.Players.LocalPlayer:Destroy()
 wait(1)
 workspace:Destroy()
