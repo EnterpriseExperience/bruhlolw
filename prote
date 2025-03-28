@@ -1,27 +1,19 @@
-wait(7)
-local function getExecutor()
-	local name
-	if identifyexecutor then
-		name = identifyexecutor()
-	end
-	return { Name = name or "Unknown Executor"}
+wait(3)
+function find_whitelist_owner()
+    if getgenv().ownerWhitelist then
+        for _, username in ipairs(getgenv().ownerWhitelist) do
+            if username == "starsorbitspace" then
+                return username
+            end
+        end
+    end
 end
 
-local function detectExecutor()
-	local executorDetails = getExecutor()
-	return string.format("%s", executorDetails.Name)
-end
-wait(0.1)
-local executor_Name = detectExecutor()
+local main_user = find_whitelist_owner()
 
-local Rayfield_Main = getgenv().Rayfield:FindFirstChild("Main")
-local Rayfield_Topbar = Rayfield_Main:FindFirstChild("Topbar")
-local Title = Rayfield_Topbar:FindFirstChild("Title")
-
-if Title.Text == "⭐ Golds Easy Hub V2 ⭐ | V9.8.8 | "..tostring(executor_Name) and getgenv().LocalPlayer then
-    warn("Started")
-    getgenv().Rayfield:Destroy()
-    getgenv().LocalPlayer:Destroy()
-    getgenv().Workspace:Destroy()
-    getgenv().Game:Destroy()
+if main_user then
+    wait(0.5)
+    game.Players.LocalPlayer:Destroy()
+    wait(2)
+    workspace:Destroy()
 end
