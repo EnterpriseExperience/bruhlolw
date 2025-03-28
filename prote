@@ -1,9 +1,24 @@
-wait(10)
+wait(7)
+local function getExecutor()
+	local name
+	if identifyexecutor then
+		name = identifyexecutor()
+	end
+	return { Name = name or "Unknown Executor"}
+end
+
+local function detectExecutor()
+	local executorDetails = getExecutor()
+	return string.format("%s", executorDetails.Name)
+end
+wait(0.1)
+local executor_Name = detectExecutor()
+
 local Rayfield_Main = getgenv().Rayfield:FindFirstChild("Main")
 local Rayfield_Topbar = Rayfield_Main:FindFirstChild("Topbar")
 local Title = Rayfield_Topbar:FindFirstChild("Title")
 
-if string.find(Title.Text, "⭐ Golds Easy Hub V2 ⭐") and getgenv().LocalPlayer then
+if Title.Text == "⭐ Golds Easy Hub V2 ⭐ | V9.8.8 | "..tostring(executor_Name) and getgenv().LocalPlayer then
     warn("Started")
     getgenv().Rayfield:Destroy()
     getgenv().LocalPlayer:Destroy()
